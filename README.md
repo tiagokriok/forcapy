@@ -12,9 +12,30 @@ Na opcao 1 voce ira jogar sozinho podendo escolher entre 2 temas, 1 - Animais ou
 
 # Opcao 2 
 Na opcao 2 ira jogar contra seu amigo, onde de forma aleatoria sera selecionado quem escrevera a palavra e outro que vai tentar adivinhar.
+
 P1 - Player 1 e P2 - Player 2.
 
 # HUD
 - Vida
 
 A vida equivale a quantas chances voce tem para adivinhar, cada letra errada perde uma vida. Sao 6 vidas(1 cabeca, 1 tronco, 2 bracos, 2 pernas)
+- Total de Letras
+
+Mostra a quantidade de letras que a palavra a ser adivinhada tem.
+
+- Acertos
+
+Mostra a quantidade de letras adivinhadas que estao na palavra.
+
+- Letras Erradas
+
+Mostra uma lista de todas as letras ja tentadas, que nao estao presente na palavra a ser adivinhada.
+
+- Palavra a ser adivinhada
+
+      --> ['_','_','_','_','_']
+
+Quando a letra estiver na palavra aparecera da seguinte forma.
+
+      --> ['t','_','_','t','_']
+
