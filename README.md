@@ -35,7 +35,7 @@ Mostra uma lista de todas as letras ja tentadas, que nao estao presente na palav
 
       --> ['_','_','_','_','_']
 
-Quando a letra estiver na palavra aparecera da seguinte forma.
+      Quando a letra estiver na palavra aparecera da seguinte forma.
 
       --> ['t','_','_','t','_']
 
