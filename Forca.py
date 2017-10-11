@@ -2,6 +2,11 @@ import os
 import sys
 import random
 import time
+import sqlite3
+
+# Conexão com BD SQLite
+conn = sqlite3.connect('forca.db')
+c = conn.cursor()
 
 pontos = 6
 acertos = 0
@@ -9,17 +14,17 @@ tam = []
 erradas = []
 r = True
 player = ['P1', 'P2']
-os.system('clear')
+os.system('cls')
 
 
-def check(letra):  # Funcao para verificar letras
+def check(letra):  # Função para verificar letras
     global pontos, palavra, tam, acertos, os, time, erradas
 
     if letra in palavra:
         if letra in tam:  # Verifica letras repitidas
             print('Letra repitida')
             time.sleep(0.5)
-            os.system('clear')
+            os.system('cls')
 
         else:   # Adiciona letra no visualizador e add pontos
             for j in range(len(palavra)):
@@ -28,26 +33,26 @@ def check(letra):  # Funcao para verificar letras
                     tam.pop(j)  # Remove o _ do visualizador
                     tam.insert(j, letra)  # Adiciona a letra no lugar do _
                     if acertos == len(palavra):  # Verifica os acertos
-                        os.system('clear')
-                        print('\n\n\t\tYou Win | Palavra:', palavra)
+                        os.system('cls')
+                        print('\n\n\t\tVocê Venceu | Palavra:', palavra)
                         time.sleep(2.5)
                         pontos = 0
-                        os.system('clear')
+                        os.system('cls')
 
     else:  # Diminui a vida do player
         if letra in erradas:  # Verifica letras repitidas
             print('Letra repitida')
             time.sleep(0.5)
-            os.system('clear')
+            os.system('cls')
 
         else:
             pontos -= 1
             erradas.append(letra)  # Adiciona a letra as Erradas no HUD
-            os.system('clear')
+            os.system('cls')
             if pontos == 0:
-                print('\n\n\t\tGame Over, a palavra era:', palavra, '\n')
+                print('\n\n\t\tSuas chances acabaram, a palavra era:', palavra, '\n')
                 time.sleep(2.5)
-                os.system('clear')
+                os.system('cls')
 
 
 def main():
@@ -70,7 +75,7 @@ def main():
 
         if op == '1':
             while r == True:
-                os.system('clear')
+                os.system('cls')
                 print('\t\tCategorias \n')
                 print('\t1 - Animais \n')
                 print('\t2 - Objetos \n')
@@ -80,24 +85,26 @@ def main():
             r = True
 
         elif op == '2':
-            os.system('clear')
+            os.system('cls')
             palavra = ''
             tam = []
             player_esc = player[random.randint(0, 1)]
             palavra = input('%s digite uma palavra:  ' % player_esc)
             palavra = str.lower(palavra)
-            os.system('clear')
+            os.system('cls')
             play()
 
         elif op == '3':
             time.sleep(0.6)
-            os.system('clear')
+            c.close() # Finaliza o cursor
+            conn.close() # Finaliza a conexão com o BD
+            os.system('cls')
             rep = False
 
         else:
-            print('Opção Invalida....')
+            print('Opção Inválida....')
             time.sleep(0.6)
-            os.system('clear')
+            os.system('cls')
 
 
 def play():
@@ -106,7 +113,7 @@ def play():
     for i in range(len(palavra)):
         tam.append('_')
     while pontos > 0:
-        os.system('clear')  # HUD do Jogo
+        os.system('cls')  # HUD do Jogo
         print('Vida:', pontos, '| Total de Letras:', len(palavra),
               '| Acertos:', acertos, '| Letras erradas:', erradas)
 
@@ -119,33 +126,26 @@ def play():
 def choice(op):
     global palavra, r
 
-    animais = ['cachorro', 'leao', 'tigre', 'gato', 'foca', 'elefante',
-               'girafa', 'zebra', 'tartaruga', 'onca', 'vaca', 'boi',
-               'carneiro', 'bode', 'iena', 'urso', 'cobra', 'macaco',
-               'galinha', 'galo', 'esquilo', 'hipopotamo', 'coelho', 'baleia',
-               'gazela', 'golfinho', 'peixe', 'orca', 'pinguim', 'rato',
-               'gamba', 'cervo', 'alce', 'panda', 'passaro', 'aguia',
-               'avestruz', 'bufalo', 'cabra', 'camelo', 'capivara', 'cavalo',
-               'pato', 'coala', 'corvo', 'crocodilo', 'gaviao', 'gorila',
-               'jacare', 'leopardo', 'lobo', 'lula', 'papagaio', 'polvo',
-               'pombo', 'porco', 'puma', 'raposa', 'rinoceronte', 'sapo',
-               'tatu', 'touro', 'tucano', 'urubu']
-
-    objetos = ['faca', 'garfo', 'colher', 'computador', 'mesa', 'cadeira',
-               'ventilador', 'abajur', 'escova', 'televisao', 'tv', 'sofa',
-               'celular', 'fogao', 'geladeira', 'cama', 'armario', 'porta',
-               'bola', 'escada', 'lapis', 'caneta', 'borracha', 'mochila',
-               'mala', 'chuveiro', 'copo', 'panela', 'roupa', 'cabide',
-               'martelo', 'chave']
-
+   
     if op == '1':
-
-        palavra = animais[random.randint(0, len(animais))]
+        
+        c.execute('SELECT count(*) FROM animais') # Ver quantas palavras tem
+        qtd_ani = c.fetchone()[0] # Passa a quantidade para a variável
+        esc_ani = random.randint(1, qtd_ani) # Escolhe um número random
+        
+        c.execute('SELECT anipal FROM animais WHERE anicod=?', (esc_ani,)) # Faz a procura da palavra atraves do codigo
+        palavra = c.fetchone()[0] # Retorna a palavra
+        
         r = False
 
     elif op == '2':
+        c.execute('SELECT count(*) FROM objetos') # Ver quantas palavras tem
+        qtd_obj = c.fetchone()[0] # Passa a quantidade para a variável
+        esc_obj = random.randint(1, qtd_obj) # Escolhe um número random
 
-        palavra = objetos[random.randint(0, len(objetos))]
+        c.execute('SELECT objpal FROM objetos WHERE objcod=?', (esc_obj,)) # Faz a procura da palavra atraves do codigo
+        palavra = c.fetchone()[0] # Retorna a palavra
+
         r = False
 
     else:
@@ -156,3 +156,4 @@ def choice(op):
 
 if __name__ == '__main__':
     main()
+
