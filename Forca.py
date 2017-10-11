@@ -14,7 +14,14 @@ tam = []
 erradas = []
 r = True
 player = ['P1', 'P2']
-os.system('cls')
+
+so = sys.platform # Verifica Sistema Operacional
+if 'win' in so:
+    limpa = 'cls'
+else:
+    limpa = 'clear'
+
+os.system(limpa)
 
 
 def check(letra):  # Função para verificar letras
@@ -24,7 +31,7 @@ def check(letra):  # Função para verificar letras
         if letra in tam:  # Verifica letras repitidas
             print('Letra repitida')
             time.sleep(0.5)
-            os.system('cls')
+            os.system(limpa)
 
         else:   # Adiciona letra no visualizador e add pontos
             for j in range(len(palavra)):
@@ -33,26 +40,26 @@ def check(letra):  # Função para verificar letras
                     tam.pop(j)  # Remove o _ do visualizador
                     tam.insert(j, letra)  # Adiciona a letra no lugar do _
                     if acertos == len(palavra):  # Verifica os acertos
-                        os.system('cls')
+                        os.system(limpa)
                         print('\n\n\t\tVocê Venceu | Palavra:', palavra)
                         time.sleep(2.5)
                         pontos = 0
-                        os.system('cls')
+                        os.system(limpa)
 
     else:  # Diminui a vida do player
         if letra in erradas:  # Verifica letras repitidas
             print('Letra repitida')
             time.sleep(0.5)
-            os.system('cls')
+            os.system(limpa)
 
         else:
             pontos -= 1
             erradas.append(letra)  # Adiciona a letra as Erradas no HUD
-            os.system('cls')
+            os.system(limpa)
             if pontos == 0:
                 print('\n\n\t\tSuas chances acabaram, a palavra era:', palavra, '\n')
                 time.sleep(2.5)
-                os.system('cls')
+                os.system(limpa)
 
 
 def main():
@@ -75,7 +82,7 @@ def main():
 
         if op == '1':
             while r == True:
-                os.system('cls')
+                os.system(limpa)
                 print('\t\tCategorias \n')
                 print('\t1 - Animais \n')
                 print('\t2 - Objetos \n')
@@ -85,26 +92,26 @@ def main():
             r = True
 
         elif op == '2':
-            os.system('cls')
+            os.system(limpa)
             palavra = ''
             tam = []
             player_esc = player[random.randint(0, 1)]
             palavra = input('%s digite uma palavra:  ' % player_esc)
             palavra = str.lower(palavra)
-            os.system('cls')
+            os.system(limpa)
             play()
 
         elif op == '3':
             time.sleep(0.6)
             c.close() # Finaliza o cursor
             conn.close() # Finaliza a conexão com o BD
-            os.system('cls')
+            os.system(limpa)
             rep = False
 
         else:
             print('Opção Inválida....')
             time.sleep(0.6)
-            os.system('cls')
+            os.system(limpa)
 
 
 def play():
@@ -113,7 +120,7 @@ def play():
     for i in range(len(palavra)):
         tam.append('_')
     while pontos > 0:
-        os.system('cls')  # HUD do Jogo
+        os.system(limpa)  # HUD do Jogo
         print('Vida:', pontos, '| Total de Letras:', len(palavra),
               '| Acertos:', acertos, '| Letras erradas:', erradas)
 
